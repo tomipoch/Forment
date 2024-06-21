@@ -19,10 +19,12 @@ const auth = getAuth(app);
 
 const addUser = async (data) => {
   try {
+    console.log('Intentando añadir un documento a Firestore', data);
     const docRef = await addDoc(collection(db, 'users'), data);
+    console.log('Documento añadido con ID: ', docRef.id);
     return docRef.id;
   } catch (error) {
-    console.error("Error adding document: ", error);
+    console.error("Error añadiendo el documento: ", error);
     throw error;
   }
 };
@@ -37,7 +39,7 @@ const getUsers = async () => {
     });
     return users;
   } catch (error) {
-    console.error("Error getting documents: ", error);
+    console.error("Error obteniendo documentos: ", error);
     throw error;
   }
 };
@@ -47,7 +49,7 @@ const updateUser = async (id, data) => {
     const docRef = doc(db, 'users', id);
     await updateDoc(docRef, data);
   } catch (error) {
-    console.error("Error updating document: ", error);
+    console.error("Error actualizando el documento: ", error);
     throw error;
   }
 };
@@ -57,28 +59,32 @@ const deleteUser = async (id) => {
     const docRef = doc(db, 'users', id);
     await deleteDoc(docRef);
   } catch (error) {
-    console.error("Error deleting document: ", error);
+    console.error("Error eliminando el documento: ", error);
     throw error;
   }
 };
 
-const uploadFile = (file, folderName) => {
-  return new Promise((resolve, reject) => {
-    const storageRef = ref(storage, `${folderName}/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+const uploadFile = async (file, folderName) => {
+  const storageRef = ref(storage, `${folderName}/${file.name}`);
+  const uploadTask = uploadBytesResumable(storageRef, file);
 
+  return new Promise((resolve, reject) => {
     uploadTask.on('state_changed',
-      () => {},
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Progreso de subida del archivo: ${progress}%`);
+      },
       (error) => {
-        console.error("Error uploading file: ", error);
+        console.error("Error subiendo el archivo: ", error);
         reject(error);
       },
       async () => {
         try {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          console.log('Archivo subido con URL: ', downloadURL);
           resolve(downloadURL);
         } catch (error) {
-          console.error("Error getting download URL: ", error);
+          console.error("Error obteniendo la URL de descarga: ", error);
           reject(error);
         }
       }

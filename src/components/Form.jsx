@@ -5,11 +5,7 @@ import InputField from './InputField';
 import FileInput from './FileInput';
 import DOMPurify from 'dompurify';
 
-/**
- * Componente de Formulario - Maneja el formulario de usuario para la recolección de datos de encuestas
- */
 const Form = () => {
-  // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
     nombre1: '',
     nombre2: '',
@@ -24,44 +20,40 @@ const Form = () => {
     fecha: new Date().toISOString().slice(0, 10),
   });
 
-  // Estado para almacenar los archivos seleccionados
   const [files, setFiles] = useState([null, null]); // Array para dos archivos
   const [errorMessage, setErrorMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Validar RUT
   const validateRUT = (rut) => {
     const rutPattern = /^[0-9]+[-|‐]{1}[0-9kK]{1}$/;
     return rutPattern.test(rut);
   };
 
-  // Validar edad
   const validateEdad = (edad) => {
     return edad > 0 && edad < 120;
   };
 
-  // Manejar cambios en los campos del formulario
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  const sanitizedValue = DOMPurify.sanitize(value);
-  setFormData((prevData) => ({
-    ...prevData,
-    [name]: name === 'talla' ? sanitizedValue.toUpperCase() : sanitizedValue,
-  }));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const sanitizedValue = DOMPurify.sanitize(value);
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: name === 'talla' ? sanitizedValue.toUpperCase() : sanitizedValue,
+    }));
 
-  if (name === 'rut' && !validateRUT(sanitizedValue)) {
-    setErrorMessage('RUT no es válido. Asegúrese de incluir el guion y no usar puntos.');
-  } else if (name === 'edad' && !validateEdad(sanitizedValue)) {
-    setErrorMessage('Edad no es válida. Debe estar entre 1 y 120 años.');
-  } else {
-    setErrorMessage('');
-  }
-};
+    if (name === 'rut' && !validateRUT(sanitizedValue)) {
+      setErrorMessage('RUT no es válido. Asegúrese de incluir el guion y no usar puntos.');
+    } else if (name === 'edad' && !validateEdad(sanitizedValue)) {
+      setErrorMessage('Edad no es válida. Debe estar entre 1 y 120 años.');
+    } else {
+      setErrorMessage('');
+    }
+  };
 
-  // Manejar cambios en los archivos
   const handleFileChange = (index, e) => {
     const selectedFile = e.target.files[0];
+
     if (selectedFile && selectedFile.size <= 5 * 1024 * 1024) {
       const newFiles = [...files];
       newFiles[index] = selectedFile;
@@ -72,7 +64,6 @@ const handleChange = (e) => {
     }
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,26 +77,29 @@ const handleChange = (e) => {
     }
 
     setLoading(true);
+    console.log('Enviando datos del formulario:', formData);
 
     try {
       const folderName = `${formData.rut}_${Date.now()}`;
       const fileURLs = await Promise.all(files.map(file => file ? uploadFile(file, folderName) : Promise.resolve(null)));
+
+      console.log('File URLs:', fileURLs);
 
       await addUser({
         ...formData,
         fileURLs,
       });
 
+      console.log('Datos enviados exitosamente a Firestore');
       setShowPopup(true);
       setLoading(false);
     } catch (error) {
       console.error('Error al enviar datos:', error);
-      setErrorMessage('Hubo un error al enviar el formulario. Inténtalo de nuevo.');
+      setErrorMessage(`Hubo un error al enviar el formulario: ${error.message}`);
       setLoading(false);
     }
   };
 
-  // Cerrar el popup y resetear el formulario
   const closePopup = () => {
     setShowPopup(false);
     setFormData({
@@ -207,3 +201,4 @@ const handleChange = (e) => {
 };
 
 export default Form;
+

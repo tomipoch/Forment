@@ -109,7 +109,19 @@ const Reporte = () => {
   }, [filters, data]);
 
   const exportToExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(filteredData);
+    const headers = ["Nombre Completo", "RUT", "Edad", "Ayuda Técnica", "Centro de Salud", "Fecha", "Talla", "Cantidad", "Archivo"];
+    const orderedData = filteredData.map(item => ({
+      "Nombre Completo": `${item.nombre1} ${item.nombre2} ${item.apellido1} ${item.apellido2}`,
+      "RUT": item.rut,
+      "Edad": item.edad,
+      "Ayuda Técnica": item.ayudaTecnica,
+      "Centro de Salud": item.centroDeSalud,
+      "Fecha": item.fecha,
+      "Talla": item.talla,
+      "Cantidad": item.cantidad,
+      "Archivo": item.fileURLs && item.fileURLs.length > 0 ? item.fileURLs.join(", ") : 'No disponible'
+    }));
+    const ws = XLSX.utils.json_to_sheet(orderedData, { header: headers });
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
     XLSX.writeFile(wb, 'reporte.xlsx');
