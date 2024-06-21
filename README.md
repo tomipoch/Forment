@@ -48,8 +48,6 @@ Navega a [http://localhost:3000](http://localhost:3000) para ver la aplicación 
 - `/src`: Código fuente del proyecto.
   - `/components`: Componentes reutilizables.
   - `/layouts`: Vistas y páginas principales.
-  - `/contexts`: Contextos para la gestión del estado global.
-  - `/firebase.js`: Configuración y funciones de Firebase.
 - `/public`: Archivos públicos.
 
 ## Tecnologías Utilizadas
