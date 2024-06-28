@@ -135,52 +135,58 @@ const Reporte = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-r from-cyan-500 to-blue-500">
       <Header showLoginButton={false} showLogoutButton={true} />
-      <div className="flex-grow container mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-8 text-center text-indigo-600">Reporte de Administrador</h1>
-        <div className="max-w-4xl mx-auto bg-white p-8 shadow-md rounded-lg">
-          <FilterInput
-            type="text"
-            name="rut"
-            value={filters.rut}
-            onChange={handleFilterChange}
-            placeholder="Filtrar por RUT"
-            label="RUT"
-            maxLength={10}
-          />
-          <FilterInput
-            label="Desde:"
-            type="date"
-            name="fechaInicio"
-            value={filters.fechaInicio}
-            onChange={handleFilterChange}
-          />
-          <FilterInput
-            label="Hasta:"
-            type="date"
-            name="fechaFin"
-            value={filters.fechaFin}
-            onChange={handleFilterChange}
-          />
-          <FilterSelect
-            label="Centro de Salud"
-            name="centroDeSalud"
-            value={filters.centroDeSalud}
-            onChange={handleFilterChange}
-            options={centrosDeSalud}
-          />
-          <FilterInput
-            type="text"
-            name="talla"
-            value={filters.talla}
-            onChange={handleFilterChange}
-            placeholder="Filtrar por Talla"
-            label="Talla"
-          />
+      <div className="flex-grow w-full p-8">
+        <h1 className="text-3xl font-bold mb-8 text-center text-white">
+          Reporte de Administrador
+        </h1>
+        <div className="max-w-7xl mx-auto bg-white p-8 shadow-md rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            <FilterInput
+              type="text"
+              name="rut"
+              value={filters.rut}
+              onChange={handleFilterChange}
+              placeholder="Filtrar por RUT"
+              label="RUT"
+              maxLength={10}
+            />
+            <FilterInput
+              type="text"
+              name="talla"
+              value={filters.talla}
+              onChange={handleFilterChange}
+              placeholder="Filtrar por Talla"
+              label="Talla"
+            />
+            <FilterSelect
+              label="Centro de Salud"
+              name="centroDeSalud"
+              value={filters.centroDeSalud}
+              onChange={handleFilterChange}
+              options={centrosDeSalud}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
+            <FilterInput
+              label="Desde:"
+              type="date"
+              name="fechaInicio"
+              value={filters.fechaInicio}
+              onChange={handleFilterChange}
+            />
+            <FilterInput
+              label="Hasta:"
+              type="date"
+              name="fechaFin"
+              value={filters.fechaFin}
+              onChange={handleFilterChange}
+            />
+          </div>
           <button
             onClick={exportToExcel}
-            className="mb-4 w-full p-3 text-lg font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="my-4 w-full p-3 text-lg font-bold text-white bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Exportar a Excel
           </button>

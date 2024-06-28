@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase'; // Asegúrate de importar `auth` correctamente
+import { FaWpforms } from 'react-icons/fa'; // Importa el ícono de formulario de react-icons
 
 const Header = ({ showLoginButton = true, showLogoutButton = false }) => {
   const navigate = useNavigate();
@@ -16,14 +17,17 @@ const Header = ({ showLoginButton = true, showLogoutButton = false }) => {
   };
 
   return (
-    <header className="bg-indigo-600 p-4 shadow-md">
+    <header className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-white text-2xl font-bold">Forment</h1>
+        <div className="flex items-center">
+          <FaWpforms className="h-6 w-6 text-white mr-2" />
+          <h1 className="text-white text-2xl font-bold">Forment</h1>
+        </div>
         <div className="flex items-center">
           {showLoginButton && (
             <button
               onClick={() => navigate('/login')}
-              className="text-white text-lg font-medium bg-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="text-white text-lg font-medium bg-transparent px-4 py-2 rounded-md hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Iniciar Sesión
             </button>
@@ -31,7 +35,7 @@ const Header = ({ showLoginButton = true, showLogoutButton = false }) => {
           {showLogoutButton && (
             <button
               onClick={handleLogout}
-              className="ml-4 text-white text-lg font-medium bg-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              className="text-white text-lg font-medium bg-transparent px-4 py-2 rounded-md hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Cerrar Sesión
             </button>
@@ -43,5 +47,3 @@ const Header = ({ showLoginButton = true, showLogoutButton = false }) => {
 };
 
 export default Header;
-
-

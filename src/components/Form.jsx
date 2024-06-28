@@ -20,7 +20,7 @@ const Form = () => {
     fecha: new Date().toISOString().slice(0, 10),
   });
 
-  const [files, setFiles] = useState([null, null]); // Array para dos archivos
+  const [files, setFiles] = useState([null, null]);
   const [errorMessage, setErrorMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -126,77 +126,107 @@ const Form = () => {
   ];
 
   return (
-    <form className="space-y-8 bg-white p-8 max-w-4xl mx-auto" onSubmit={handleSubmit} aria-label="Formulario de encuesta">
-      {showPopup && <Popup message="¡El formulario se ha enviado correctamente!" onClose={closePopup} />}
-      {errorMessage && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" aria-live="assertive">
-          <strong className="font-bold">Error:</strong>
-          <span className="block sm:inline"> {errorMessage}</span>
+    <div>
+      <h1 className="text-3xl font-bold mb-8 text-center text-white">
+        Formulario de Usuario
+      </h1>
+      <div className="flex-grow w-full p-4 md:p-8">
+        <div className="max-w-7xl mx-auto bg-white p-4 md:p-8 shadow-md rounded-lg">
+          <form className="space-y-8 w-full" onSubmit={handleSubmit} aria-label="Formulario de encuesta">
+            {showPopup && <Popup message="¡El formulario se ha enviado correctamente!" onClose={closePopup} />}
+            {errorMessage && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" aria-live="assertive">
+                <strong className="font-bold">Error:</strong>
+                <span className="block sm:inline"> {errorMessage}</span>
+              </div>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { label: 'Primer Nombre', name: 'nombre1', placeholder: 'Ingresa tu primer nombre' },
+                { label: 'Segundo Nombre', name: 'nombre2', placeholder: 'Ingresa tu segundo nombre' },
+                { label: 'Apellido Paterno', name: 'apellido1', placeholder: 'Ingresa tu apellido paterno' },
+                { label: 'Apellido Materno', name: 'apellido2', placeholder: 'Ingresa tu apellido materno' },
+                { label: 'RUT', name: 'rut', maxLength: 10, helperText: 'Con guión y sin puntos', placeholder: '12.345.678-9' },
+                { label: 'Edad', name: 'edad', type: 'number', placeholder: 'Ingresa tu edad' },
+                { label: 'Ayuda Técnica', name: 'ayudaTecnica', placeholder: 'Ingresa la ayuda técnica' },
+                { label: 'Talla', name: 'talla', placeholder: 'Ingresa la talla' },
+              ].map(({ label, name, maxLength, type, helperText, placeholder }) => (
+                <InputField
+                  key={name}
+                  label={label}
+                  name={name}
+                  value={formData[name]}
+                  onChange={handleChange}
+                  type={type}
+                  maxLength={maxLength}
+                  helperText={helperText}
+                  placeholder={placeholder}
+                  className="w-full"
+                />
+              ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:col-span-2">
+                <InputField
+                  label="Cantidad"
+                  name="cantidad"
+                  value={formData.cantidad}
+                  onChange={handleChange}
+                  type="number"
+                  placeholder="Ingresa la cantidad"
+                  className="w-full"
+                />
+                <div className="w-full">
+                  <label className="block text-lg font-medium text-gray-700">
+                    Centro de Salud
+                  </label>
+                  <select
+                    name="centroDeSalud"
+                    value={formData.centroDeSalud}
+                    onChange={handleChange}
+                    required
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-lg sm:text-lg p-2"
+                    aria-label="Centro de Salud"
+                  >
+                    <option value="">Selecciona un centro de salud</option>
+                    {centrosDeSalud.map((centro) => (
+                      <option key={centro} value={centro}>
+                        {centro}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="col-span-1 md:col-span-2 flex flex-col md:flex-row md:space-x-4 justify-center">
+                <div className="w-full md:w-1/2">
+                  <label className="block text-lg font-medium text-gray-700">
+                    Subir Archivos <span className="text-gray-500 text-sm">(Máximo 5MB cada archivo)</span>
+                  </label>
+                  <div className="mt-1 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                    {[0, 1].map(index => (
+                      <FileInput
+                        key={index}
+                        index={index}
+                        file={files[index]}
+                        onFileChange={handleFileChange}
+                        className="w-full"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 flex items-end mt-4 md:mt-0">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    {loading ? 'Enviando...' : 'Enviar'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
-      )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {[
-          { label: 'Primer Nombre', name: 'nombre1' },
-          { label: 'Segundo Nombre', name: 'nombre2' },
-          { label: 'Apellido Paterno', name: 'apellido1' },
-          { label: 'Apellido Materno', name: 'apellido2' },
-          { label: 'RUT', name: 'rut', maxLength: 10, helperText: 'Con guión y sin puntos' },
-          { label: 'Edad', name: 'edad', type: 'number' },
-          { label: 'Ayuda Técnica', name: 'ayudaTecnica' },
-          { label: 'Talla', name: 'talla' },
-          { label: 'Cantidad', name: 'cantidad', type: 'number' },
-        ].map(({ label, name, maxLength, type, helperText }) => (
-          <InputField
-            key={name}
-            label={label}
-            name={name}
-            value={formData[name]}
-            onChange={handleChange}
-            type={type}
-            maxLength={maxLength}
-            helperText={helperText}
-          />
-        ))}
-        <div>
-          <label className="block text-lg font-medium text-gray-700">
-            Centro de Salud
-          </label>
-          <select
-            name="centroDeSalud"
-            value={formData.centroDeSalud}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-lg sm:text-lg p-2"
-            aria-label="Centro de Salud"
-          >
-            <option value="">Selecciona un centro de salud</option>
-            {centrosDeSalud.map((centro) => (
-              <option key={centro} value={centro}>
-                {centro}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-lg font-medium text-gray-700">
-            Subir Archivos <span className="text-gray-500 text-sm">(Máximo 5MB cada archivo)</span>
-          </label>
-          <div className="mt-1 flex space-x-4">
-            {[0, 1].map(index => (
-              <FileInput
-                key={index}
-                index={index}
-                file={files[index]}
-                onFileChange={handleFileChange}
-              />
-            ))}
-          </div>
-        </div>
-        <button type="submit" disabled={loading} className="md:col-span-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          {loading ? 'Enviando...' : 'Enviar'}
-        </button>
       </div>
-    </form>
+    </div>
   );
 };
 

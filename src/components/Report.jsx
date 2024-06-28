@@ -4,7 +4,7 @@ const Report = ({ data, onEdit, onDelete }) => {
   return (
     <div className="overflow-x-auto rounded-lg">
       <table className="min-w-full bg-white border-collapse">
-        <thead className="bg-indigo-600 text-white text-sm">
+        <thead className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm">
           <tr>
             <th className="py-2 px-4 text-center">Nombre Completo</th>
             <th className="py-2 px-4 text-center">RUT</th>

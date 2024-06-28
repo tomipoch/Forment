@@ -3,7 +3,7 @@ import { FaGithub, FaEnvelope, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-indigo-600 p-4 mt-8">
+    <footer className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4">
       <div className="container mx-auto text-center text-white">
         <p>&copy; {new Date().getFullYear()} Sistema de Encuesta. Todos los derechos reservados.</p>
         <div className="flex justify-center space-x-4 mt-4">

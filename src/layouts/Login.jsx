@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'react-feather';
+import { FaWpforms, FaArrowLeft } from 'react-icons/fa';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -27,9 +28,21 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-indigo-600 flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white p-8 shadow-md rounded-3xl">
-        <h1 className="text-2xl font-bold mb-6 text-center text-indigo-600">Iniciar Sesión</h1>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-r from-cyan-500 to-blue-500">
+      <div className="absolute top-8 flex items-center text-white">
+        <FaWpforms className="h-8 w-8 mr-2" />
+        <h1 className="text-3xl font-bold">Forment</h1>
+      </div>
+      <div className="max-w-md w-full bg-white p-8 shadow-md rounded-3xl relative mt-16">
+        <button
+          onClick={() => navigate('/')}
+          className="absolute top-4 left-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white p-2 rounded-full flex items-center justify-center hover:bg-gradient-to-r from-cyan-600 to-blue-600 focus:outline-none"
+        >
+          <FaArrowLeft className="h-4 w-4" />
+        </button>
+        <h1 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
+          Iniciar Sesión
+        </h1>
         {errorMessage && (
           <div className="mb-4 text-red-600">
             {errorMessage}
@@ -77,7 +90,11 @@ const Login = () => {
             </div>
           </div>
           <div className="text-right">
-            <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <button 
+              type="submit" 
+              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              style={{ outline: 'none' }} // Asegura que el outline esté desactivado
+            >
               Iniciar Sesión
             </button>
           </div>

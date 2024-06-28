@@ -5,13 +5,10 @@ import Form from '../components/Form';
 
 const Inicio = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
+    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-r from-cyan-500 to-blue-500">
       <Header />
       <main className="flex-grow container mx-auto p-8" role="main">
-        <h1 className="text-3xl font-bold mb-8 text-center text-indigo-600">Formulario de Usuario</h1>
-        <div className="max-w-4xl mx-auto bg-white p-8 shadow-md rounded-lg">
-          <Form />
-        </div>
+        <Form />
       </main>
       <Footer />
     </div>
