@@ -12,7 +12,7 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="min-h-screen flex flex-col">
-          <Suspense fallback={<div>Cargando...</div>}>
+          <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={<Inicio />} />
               <Route path="/login" element={<Login />} />
